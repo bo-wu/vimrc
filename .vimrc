@@ -1,36 +1,32 @@
 " Set up vim configure by myself
-"""""""""""""""""""""""""""""""""""""""""
-"" set up vundle
-"""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" set up plug
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set nocompatible "be iMproved, required
 filetype off
-""set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin() "Keep Plugin commands between vundle#begin/end.
-Plugin 'VundleVim/Vundle.vim' "let Vundle manage Vundle, required
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-surround'
-Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'vim-airline/vim-airline'
-Plugin 'tikhomirov/vim-glsl'
-Plugin 'beyondmarc/opengl.vim'
-Plugin 'majutsushi/tagbar'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'Raimondi/delimitMate'
-Plugin 'Yggdroot/indentLine'
-Plugin 'w0rp/ale'
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
-Plugin 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'} "The sparkup vim script is in a subdirectory of this repo called vim.
-call vundle#end()
+call plug#begin('~/.vim/plugged') "Keep Plugins between #begin/#end.
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'w0rp/ale'
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdcommenter'
+Plug 'Chiel92/vim-autoformat'
+Plug 'tikhomirov/vim-glsl'
+Plug 'airblade/vim-gitgutter'
+Plug 'beyondmarc/opengl.vim'
+Plug 'majutsushi/tagbar'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'Raimondi/delimitMate'
+Plug 'Yggdroot/indentLine'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'nine2/vim-copyright'
+call plug#end()
 filetype plugin indent on  " required
-"  Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cachehttps://github.com/bo-wu
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" bellow install from source list
+" youcompleteme, ctrlp, airline, jedi, auotpep8
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""
 "basic vim settings"
 """"""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -45,8 +41,9 @@ set backspace=2
 set autochdir
 set autoread 	 " auto read file after modified
 set encoding=utf8
-set cmdheight=2  " avoid create new cpp error from ycm, donot understand
+set fileencodings=utf-8,gbk
 set scrolloff=4
+set belloff=all
 syntax on        " syntax highlight
 au FocusLost * silent! wa " autosave files when it loses the focus
 au BufReadPost * exe "normal! g`\""
@@ -94,7 +91,6 @@ endif
 """"""""""""""""""""""""""""""""""""""""""""""""
 " YCM configure
 """"""""""""""""""""""""""""""""""""""""""""""""
-"let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_collect_identifiers_from_tag_files = 0
 let g:ycm_complete_in_comments = 1
@@ -102,10 +98,11 @@ let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_complete_in_strings = 1
 let g:ycm_seed_identifiers_with_syntax = 1  " feed ycm identifier with syntax keywords
 let g:ycm_confirm_extra_conf=0
+" let g:ycm_server_python_interpreter = '/usr/bin/python3'
 "let g:ycm_auto_trigger = 1
 "let g:ycm_key_list_select_completion = ['<TAB>', '<c-n>', '<Down>'] 
 "let g:ycm_key_list_previous_completion = ['<S-TAB>', '<c-p>', '<Up>'] 
-nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
+nnoremap <F7> :YcmForceCompileAndDiagnostics<CR>
 nnoremap <leader>gg :YcmCompleter GoToDefinitionElseDeclaration<CR>
 nnoremap <leader>gf :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>gd :YcmCompleter GoToDeclaration<CR>
@@ -127,9 +124,12 @@ nnoremap <F3> :TagbarToggle<CR>
 " airline
 """"""""""""""""""""""""""""""""""""""""""""""
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#buffer_nr_show=1 "buffer number
-"let g:airline#extensions#tabline#left_sep = ' '
-"let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#show_buffers = 1
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+" let g:airline#extensions#tabline#buffer_nr_show=1 "buffer number
+" let g:airline#extensions#tabline#left_sep = ' '
+" let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#ale#enable = 1  "airline using ale
 let g:airline_powerline_fonts = 1
 nnoremap <A-s> :bn<CR>
 nnoremap <A-a> :bp<CR>
@@ -138,7 +138,8 @@ nnoremap <A-a> :bp<CR>
 """"""""""""""""""""""""""""""""""""""""""""""
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn|pyc)$'
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_custom_ignore = {'dir':'\v[\/]\.(git|hg|svn)', 'file':'\v\.(so|pyc)$'}
 let g:indentLine_enabled = 1
 """"""""""""""""""""""""""""""""""""""""""""""
 " ulti snips setting
@@ -147,3 +148,45 @@ let g:UltiSnipsExpandTrigger="<a-f>"
 let g:snips_author = "Wu Bo"
 let g:snips_email = "wubo.cs@gmail.com"
 let g:snips_github = "https://github.com/bo-wu"
+""""""""""""""""""""""""""""""""""""""""""""""
+" ale
+""""""""""""""""""""""""""""""""""""""""""""""
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_enter = 0
+let g:ale_sign_error = '✗'
+let g:ale_sign_warning = '⚡'
+let g:ale_fix_on_save = 1
+let g:ale_completion_enabled = 1
+let g:ale_sign_column_always = 1
+nmap <Leader>a :ALEToggle<CR>
+""""""""""""""""""""""""""""""""""""""""""""""
+" copyright
+""""""""""""""""""""""""""""""""""""""""""""""
+let g:file_copyright_name = "Bo Wu"
+let g:file_copyright_email = "wubo.cs@gmail.com"
+""""""""""""""""""""""""""""""""""""""""""""""
+" Auto format
+""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <F6> :Autoformat<CR>
+let g:autoformat_autoindent = 0
+let g:autoformat_retab = 0
+let g:autoformat_remove_trailing_spaces = 0
+""""""""""""""""""""""""""""""""""""""""""""""
+" Quickly Run
+""""""""""""""""""""""""""""""""""""""""""""""
+map <F5> :call CompileRunGcc()<CR>
+
+func! CompileRunGcc()
+    exec "w"
+    if &filetype == 'c'
+        exec '!g++ % -o %<'
+        exec '!time ./%<'
+    elseif &filetype == 'cpp'
+        exec '!g++ % -o %<'
+        exec '!time ./%<'
+    elseif &filetype == 'python'
+        exec '!time python3 %'
+    elseif &filetype == 'sh'
+        :!time bash %
+    endif
+endfunc
