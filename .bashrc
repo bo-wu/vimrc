@@ -93,6 +93,9 @@ alias la='ls -A'
 alias l='ls -CF'
 alias rm='rm -i'
 alias mv='mv -i'
+alias glslangvalidator='glslangValidator'
+alias python='/usr/bin/python3'
+
 # Alias definitions.
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
@@ -113,5 +116,16 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export PATH=/home/wubo/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:${PATH}
-export LD_LIBRARY_PATH=/usr/local/lib/:${LD_LIBRARY_PATH}
+export PATH=/home/wubo/.local/bin:/bin:/usr/sbin:${PATH}
+export LD_LIBRARY_PATH=/home/wubo/.local/lib:/usr/local/lib/:/usr/local/cuda/lib64/:${LD_LIBRARY_PATH}
+
+# pip bash completion start
+_pip_completion()
+{
+    COMPREPLY=( $( COMP_WORDS="${COMP_WORDS[*]}" \
+                   COMP_CWORD=$COMP_CWORD \
+                   PIP_AUTO_COMPLETE=1 $1 ) )
+}
+complete -o default -F _pip_completion pip3
+# pip bash completion end
+
