@@ -21,6 +21,7 @@ Plug 'Yggdroot/indentLine'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'nine2/vim-copyright'
+Plug 'skywind3000/asyncrun.vim'
 call plug#end()
 filetype plugin indent on  " required
 """"""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -172,10 +173,13 @@ let g:autoformat_autoindent = 0
 let g:autoformat_retab = 0
 let g:autoformat_remove_trailing_spaces = 0
 """"""""""""""""""""""""""""""""""""""""""""""
-" Quickly Run
+" AsyncRun
 """"""""""""""""""""""""""""""""""""""""""""""
+let $PYTHONUNBUFFERED=1
+let g:asyncrun_status = ''
+let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status}'])
+let g:asyncrun_open = 4
 map <F5> :call CompileRunGcc()<CR>
-
 func! CompileRunGcc()
     exec "w"
     if &filetype == 'c'
@@ -185,7 +189,7 @@ func! CompileRunGcc()
         exec '!g++ % -o %<'
         exec '!time ./%<'
     elseif &filetype == 'python'
-        exec '!time python3 %'
+        exec 'AsyncRun -raw time python3 %'
     elseif &filetype == 'sh'
         :!time bash %
     endif
