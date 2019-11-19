@@ -103,7 +103,7 @@ let g:ycm_confirm_extra_conf=0
 "let g:ycm_auto_trigger = 1
 "let g:ycm_key_list_select_completion = ['<TAB>', '<c-n>', '<Down>'] 
 "let g:ycm_key_list_previous_completion = ['<S-TAB>', '<c-p>', '<Up>'] 
-nnoremap <F7> :YcmForceCompileAndDiagnostics<CR>
+nnoremap <F6> :YcmForceCompileAndDiagnostics<CR>
 nnoremap <leader>gg :YcmCompleter GoToDefinitionElseDeclaration<CR>
 nnoremap <leader>gf :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>gd :YcmCompleter GoToDeclaration<CR>
@@ -132,6 +132,7 @@ let g:airline#extensions#tabline#buffer_idx_mode = 1
 " let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#ale#enable = 1  "airline using ale
 let g:airline_powerline_fonts = 1
+let g:airline_theme="badwolf"
 nnoremap <A-s> :bn<CR>
 nnoremap <A-a> :bp<CR>
 """"""""""""""""""""""""""""""""""""""""""""""
@@ -154,8 +155,8 @@ let g:snips_github = "https://github.com/bo-wu"
 """"""""""""""""""""""""""""""""""""""""""""""
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_enter = 0
-let g:ale_sign_error = '✗'
-let g:ale_sign_warning = '⚡'
+" let g:ale_sign_error = '✗'
+" let g:ale_sign_warning = '⚡'
 let g:ale_fix_on_save = 1
 let g:ale_completion_enabled = 1
 let g:ale_sign_column_always = 1
@@ -168,7 +169,7 @@ let g:file_copyright_email = "wubo.cs@gmail.com"
 """"""""""""""""""""""""""""""""""""""""""""""
 " Auto format
 """"""""""""""""""""""""""""""""""""""""""""""
-nnoremap <F6> :Autoformat<CR>
+nmap <Leader>f :Autoformat<CR>
 let g:autoformat_autoindent = 0
 let g:autoformat_retab = 0
 let g:autoformat_remove_trailing_spaces = 0
@@ -182,15 +183,16 @@ let g:asyncrun_open = 4
 map <F5> :call CompileRunGcc()<CR>
 func! CompileRunGcc()
     exec "w"
-    if &filetype == 'c'
-        exec '!g++ % -o %<'
-        exec '!time ./%<'
-    elseif &filetype == 'cpp'
-        exec '!g++ % -o %<'
-        exec '!time ./%<'
-    elseif &filetype == 'python'
+    if &filetype == 'python'
         exec 'AsyncRun -raw time python3 %'
     elseif &filetype == 'sh'
         :!time bash %
     endif
 endfunc
+""""""""""""""""""""""""""""""""""""""""""""""
+" QuickFix
+""""""""""""""""""""""""""""""""""""""""""""""
+nmap <F7> :cn<cr>
+nmap <F8> :cp<cr>
+nmap <Leader>f :botright copen 4<cr>
+nmap <Leader>c : cw<cr>
