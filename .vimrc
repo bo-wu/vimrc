@@ -16,12 +16,13 @@ Plug 'airblade/vim-gitgutter'
 Plug 'beyondmarc/opengl.vim'
 Plug 'majutsushi/tagbar'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'Raimondi/delimitMate'
+"Plug 'Raimondi/delimitMate'
 Plug 'Yggdroot/indentLine'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'nine2/vim-copyright'
 Plug 'skywind3000/asyncrun.vim'
+Plug 'jiangmiao/auto-pairs'
 call plug#end()
 filetype plugin indent on  " required
 """"""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -195,4 +196,4 @@ endfunc
 nmap <F7> :cn<cr>
 nmap <F8> :cp<cr>
 nmap <Leader>f :botright copen 4<cr>
-nmap <Leader>c : cw<cr>
+nmap <Leader>c :cw<cr>
